@@ -12,7 +12,7 @@ public class MainActivity extends AppCompatActivity {
 
         MyWebView webView = new MyWebView(getBaseContext());
         setContentView(webView);
-        webView.loadUrl("https://esii-orion.com/orion-display/assets/sounds/esii_call_sounds.mp3");
+        webView.loadUrl("http://touchpianist.com/");
 
     }
 
