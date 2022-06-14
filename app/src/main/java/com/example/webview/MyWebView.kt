@@ -2,11 +2,10 @@ package com.example.webview
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.net.http.SslError
+import android.util.Log
 import android.view.View
-import android.webkit.WebChromeClient
-import android.webkit.WebSettings
-import android.webkit.WebView
-import android.webkit.WebViewClient
+import android.webkit.*
 
 @SuppressLint("SetJavaScriptEnabled")
 class MyWebView constructor(context: Context) : WebView(context) {
@@ -27,16 +26,26 @@ class MyWebView constructor(context: Context) : WebView(context) {
         settings.layoutAlgorithm = WebSettings.LayoutAlgorithm.TEXT_AUTOSIZING
         settings.mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW;
         webChromeClient = WebChromeClient()
-        webViewClient = WebViewClient()
 
         setLayerType(View.LAYER_TYPE_NONE, null)
 
 
-//        webViewClient = object : WebViewClient() {
-//            override fun onPageFinished(view: WebView?, url: String?) {
-//                super.onPageFinished(view, url)
-//                loadUrl("javascript:(function() { document.getElementsByTagName('video')[0].play(); })()")
-//            }
-//        }
+        webViewClient = object : WebViewClient() {
+
+
+            @SuppressLint("WebViewClientOnReceivedSslError")
+            override fun onReceivedSslError(
+                view: WebView?,
+                handler: SslErrorHandler?,
+                error: SslError?
+            ) {
+                handler?.proceed()
+            }
+
+            override fun onPageFinished(view: WebView?, url: String?) {
+                super.onPageFinished(view, url)
+                Log.d("WebView","onPageFinished")
+            }
+        }
     }
 }
